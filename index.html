@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For You 💌</title>
+  <style>
+    :root {
+      --bg1:#0f1020; --bg2:#1b1d3a; --card:#ffffff12; --text:#f7f7fb;
+      --accent:#ff4d88; --accent2:#ffd166;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% 10%, #ff4d8830, transparent 60%),
+                  radial-gradient(900px 500px at 80% 30%, #ffd16625, transparent 55%),
+                  linear-gradient(160deg, var(--bg1), var(--bg2));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+    .card {
+      width: min(720px, 100%);
+      background: var(--card);
+      border: 1px solid #ffffff20;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 60px #00000055;
+      backdrop-filter: blur(10px);
+      position: relative;
+    }
+    .tag {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid #ffffff25;
+      background: #ffffff10;
+      font-size: 14px;
+      opacity: .95;
+    }
+    h1 { margin: 14px 0 10px; font-size: clamp(28px, 4vw, 40px); line-height: 1.08; }
+    p { margin: 0 0 14px; font-size: 16px; opacity: .92; }
+    .screen { display: none; }
+    .screen.active { display: block; animation: fade .35s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
+    button {
+      border: 0;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #0b0c16;
+      transition: transform .08s ease, filter .2s ease;
+      user-select: none;
+    }
+    button:active { transform: translateY(1px) scale(.99); }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #ff8fb5); }
+    .btn-ghost { background: #ffffff15; color: var(--text); border: 1px solid #ffffff25; }
+    .btn-warn { background: linear-gradient(135deg, #ffd166, #ffb703); }
+    .moment {
+      border: 1px solid #ffffff20;
+      background: #ffffff10;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+    .moment h3 { margin: 0 0 8px; font-size: 18px; }
+    .progress { margin-top: 14px; font-size: 13px; opacity: .85; }
+    .valentine {
+      margin-top: 18px;
+      border-radius: 22px;
+      padding: 18px;
+      border: 1px solid #ffffff22;
+      background: linear-gradient(135deg, #ff4d8825, #ffd16615);
+    }
+    .btns-val { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+    .no-wrap { position: relative; }
+    .tiny { font-size: 13px; opacity: .8; margin-top: 10px; }
+    canvas { position: fixed; inset: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+
+  <main class="card" role="main">
+    <div class="screen active" id="s0">
+      <span class="tag">💌 A tiny website, just for you</span>
+      <h1>Hey you…</h1>
+      <p>
+        I made a small little page because sometimes words feel better when you can *tap through them*.
+      </p>
+      <p class="tiny">Put your name here ↓</p>
+      <div class="row">
+        <input id="name" placeholder="Her name…" style="
+          flex: 1; min-width: 220px;
+          padding: 12px 14px; border-radius: 14px;
+          border: 1px solid #ffffff25; background:#ffffff10; color:var(--text);
+          outline:none;
+        "/>
+        <button class="btn-primary" id="start">Start ✨</button>
+      </div>
+      <p class="tiny">Tip: you can personalize the “moments” inside the code.</p>
+    </div>
+
+    <div class="screen" id="s1">
+      <span class="tag">🌙 Little moments</span>
+      <h1 id="hi"></h1>
+      <p>Before I ask you something… I just want you to know a few things.</p>
+
+      <div class="moment">
+        <h3 id="mTitle"></h3>
+        <p id="mBody"></p>
+      </div>
+
+      <div class="progress" id="prog"></div>
+
+      <div class="row">
+        <button class="btn-ghost" id="back">← Back</button>
+        <button class="btn-primary" id="next">Next →</button>
+      </div>
+    </div>
+
+    <div class="screen" id="s2">
+      <span class="tag">💘 The question</span>
+      <h1 id="finalTitle">So…</h1>
+      <p class="valentine" id="finalText"></p>
+
+      <div class="btns-val">
+        <button class="btn-primary" id="yes">Yes 💖</button>
+        <span class="no-wrap">
+          <button class="btn-warn" id="no">No 🙃</button>
+        </span>
+      </div>
+
+      <p class="tiny">The “No” button is a little shy 😅</p>
+    </div>
+
+    <div class="screen" id="s3">
+      <span class="tag">🎉 Yay!</span>
+      <h1>It’s a date 💘</h1>
+      <p id="yayText"></p>
+      <div class="row">
+        <button class="btn-primary" id="copy">Copy a cute message to send me</button>
+        <button class="btn-ghost" id="restart">Replay</button>
+      </div>
+      <p class="tiny">Screenshot this moment. It’s official now 😄</p>
+    </div>
+  </main>
+
+  <script>
+    // --- Personalize these ---
+    const moments = [
+      { title: "I love how you make things feel lighter", body: "Even on hectic days, you somehow bring calm and warmth." },
+      { title: "You’re genuinely special to me", body: "Not just in big moments… in the small ones too." },
+      { title: "I’m grateful for you", body: "For your presence, your heart, and the way you show up." },
+      { title: "So I wanted to do something different", body: "Something thoughtful. Something that feels like *us*." }
+    ];
+
+    // Change this line to match your vibe:
+    const valentineQuestion = (name) =>
+      `${name || "You"}… will you be my Valentine? 💌\n\n(And yes, I’m planning something cute. You’re not escaping.)`;
+
+    const yayMessage = (name) =>
+      `Okay ${name || "love"}… now you’re stuck with me 😌💘\n\nSend me this: “Yes — I’m your Valentine. Now tell me the plan 😏”`;
+
+    // --- Screen logic ---
+    const screens = ["s0","s1","s2","s3"].map(id => document.getElementById(id));
+    const show = (i) => screens.forEach((s, idx) => s.classList.toggle("active", idx===i));
+
+    const nameEl = document.getElementById("name");
+    const hi = document.getElementById("hi");
+    const mTitle = document.getElementById("mTitle");
+    const mBody = document.getElementById("mBody");
+    const prog = document.getElementById("prog");
+    const finalText = document.getElementById("finalText");
+    const yayText = document.getElementById("yayText");
+
+    let idx = 0;
+
+    function renderMoment() {
+      const m = moments[idx];
+      mTitle.textContent = m.title;
+      mBody.textContent = m.body;
+      prog.textContent = `Moment ${idx+1} of ${moments.length}`;
+      document.getElementById("back").style.opacity = idx === 0 ? 0.4 : 1;
+      document.getElementById("back").style.pointerEvents = idx === 0 ? "none" : "auto";
+      document.getElementById("next").textContent = idx === moments.length - 1 ? "To the question →" : "Next →";
+    }
+
+    document.getElementById("start").onclick = () => {
+      hi.textContent = `Hey ${nameEl.value || "you"} ✨`;
+      idx = 0;
+      renderMoment();
+      show(1);
+    };
+
+    document.getElementById("back").onclick = () => { if (idx > 0) { idx--; renderMoment(); } };
+    document.getElementById("next").onclick = () => {
+      if (idx < moments.length - 1) { idx++; renderMoment(); }
+      else {
+        finalText.textContent = valentineQuestion(nameEl.value);
+        show(2);
+      }
+    };
+
+    // --- Shy No button ---
+    const noBtn = document.getElementById("no");
+    const noWrap = document.querySelector(".no-wrap");
+    function dodge() {
+      const maxX = 160, maxY = 70;
+      const x = (Math.random() * 2 - 1) * maxX;
+      const y = (Math.random() * 2 - 1) * maxY;
+      noWrap.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    noBtn.addEventListener("mouseenter", dodge);
+    noBtn.addEventListener("click", dodge);
+
+    // --- Yes flow + confetti ---
+    document.getElementById("yes").onclick = () => {
+      yayText.textContent = yayMessage(nameEl.value);
+      show(3);
+      popConfetti();
+    };
+
+    document.getElementById("copy").onclick = async () => {
+      const msg = `Yes — I’m your Valentine. Now tell me the plan 😏💘`;
+      try {
+        await navigator.clipboard.writeText(msg);
+        alert("Copied 😄");
+      } catch {
+        prompt("Copy this:", msg);
+      }
+    };
+
+    document.getElementById("restart").onclick = () => {
+      noWrap.style.transform = "translate(0,0)";
+      show(0);
+    };
+
+    // --- Simple confetti (tiny canvas) ---
+    const canvas = document.getElementById("confetti");
+    const ctx = canvas.getContext("2d");
+    const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    function resize() {
+      canvas.width = Math.floor(innerWidth * DPR);
+      canvas.height = Math.floor(innerHeight * DPR);
+      canvas.style.width = innerWidth + "px";
+      canvas.style.height = innerHeight + "px";
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    let confetti = [];
+    function popConfetti() {
+      const count = 160;
+      confetti = Array.from({length: count}, () => ({
+        x: innerWidth/2 + (Math.random()*200-100),
+        y: innerHeight/3 + (Math.random()*40-20),
+        vx: (Math.random()*2-1)*6,
+        vy: (Math.random()*-1)*10 - 2,
+        g: 0.25 + Math.random()*0.15,
+        r: 2 + Math.random()*4,
+        a: 1
+      }));
+      requestAnimationFrame(tick);
+    }
+    function tick() {
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      confetti.forEach(p => {
+        p.vy += p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.a *= 0.992;
+        ctx.globalAlpha = Math.max(0, p.a);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      confetti = confetti.filter(p => p.a > 0.05 && p.y < innerHeight + 50);
+      if (confetti.length) requestAnimationFrame(tick);
+    }
+  </script>
+</body>
+</html>
