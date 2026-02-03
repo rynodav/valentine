@@ -43,6 +43,9 @@
       background: #ffffff10;
       font-size: 14px;
       opacity: .95;
+    } 
+    .center { 
+        justify-content: center; 
     }
     h1 { margin: 14px 0 10px; font-size: clamp(28px, 4vw, 40px); line-height: 1.08; }
     p { margin: 0 0 14px; font-size: 16px; opacity: .92; }
@@ -94,7 +97,7 @@
         <span class="tag">💌 ’n Klein website, vir my natvis 🐟</span>
         <h1>Hii my lief :) </h1>
         <p>
-            Ek het hierdie vir jou gebou… net iets klein om vir jou te wys hoe baie jy vir my beteken :)
+            Ek het hierdie vir jou gebou… net iets klein om vir jou te wys hoe baie jy vir my beteken.
         </p>
 
         <div class="row center">
@@ -160,17 +163,18 @@
     ];
 
     // Change this line to match your vibe:
-    const valentineQuestion = (name) =>
-      `${name || "You"}… will you be my Valentine? 💌\n\n(And yes, I’m planning something cute. You’re not escaping.)`;
+    const valentineQuestion = () =>
+    `Mary-Lize… wil jy my Valentyn wees? 💌\n\n(En ja — ek beplan iets cute. Jy gaan nie ontsnap nie 😌)`;
 
-    const yayMessage = (name) =>
-      `Okay ${name || "love"}… now you’re stuck with me 😌💘\n\nSend me this: “Yes — I’m your Valentine. Now tell me the plan 😏”`;
+    const yayMessage = () =>
+    `Okay Mary-Lize… nou is dit amptelik 😌💘\n\nStuur vir my: “Ja — ek is jou Valentyn. Nou sê vir my wat is die plan 😏”`;
+
 
     // --- Screen logic ---
     const screens = ["s0","s1","s2","s3"].map(id => document.getElementById(id));
     const show = (i) => screens.forEach((s, idx) => s.classList.toggle("active", idx===i));
 
-    const nameEl = document.getElementById("name");
+    // const nameEl = document.getElementById("name"); 
     const hi = document.getElementById("hi");
     const mTitle = document.getElementById("mTitle");
     const mBody = document.getElementById("mBody");
@@ -191,17 +195,18 @@
     }
 
     document.getElementById("start").onclick = () => {
-      hi.textContent = `Hey ${nameEl.value || "you"} ✨`;
-      idx = 0;
-      renderMoment();
-      show(1);
-    };
+        hi.textContent = `Hey Mary-Lize ✨`;
+        idx = 0;
+        renderMoment();
+        show(1);
+        };
+
 
     document.getElementById("back").onclick = () => { if (idx > 0) { idx--; renderMoment(); } };
     document.getElementById("next").onclick = () => {
       if (idx < moments.length - 1) { idx++; renderMoment(); }
       else {
-        finalText.textContent = valentineQuestion(nameEl.value);
+        finalText.textContent = valentineQuestion();
         show(2);
       }
     };
@@ -220,7 +225,7 @@
 
     // --- Yes flow + confetti ---
     document.getElementById("yes").onclick = () => {
-      yayText.textContent = yayMessage(nameEl.value);
+      yayText.textContent = yayMessage();
       show(3);
       popConfetti();
     };
