@@ -1,255 +1,400 @@
 <!doctype html>
-<html lang="en">
+<html lang="af">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>For You 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mary-Lize 💌</title>
+
   <style>
-    :root {
-      --bg1:#0f1020; --bg2:#1b1d3a; --card:#ffffff12; --text:#f7f7fb;
-      --accent:#ff4d88; --accent2:#ffd166;
+    :root{
+      --pink1:#ff4fa3;
+      --pink2:#ff8fc7;
+      --pink3:#ffd1e6;
+      --bg:#120015;
+      --card:#ffffff25;
+      --cardBorder:#ffffff40;
+      --text:#fff6fb;
+      --muted:#ffe3f2;
+      --shadow: 0 25px 70px rgba(0,0,0,0.45);
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      color:var(--text);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: radial-gradient(1200px 600px at 20% 10%, #ff4d8830, transparent 60%),
-                  radial-gradient(900px 500px at 80% 30%, #ffd16625, transparent 55%),
-                  linear-gradient(160deg, var(--bg1), var(--bg2));
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      overflow: hidden;
+      overflow:hidden;
+
+      /* Pink dreamy background */
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(255,79,163,0.55), transparent 60%),
+        radial-gradient(800px 520px at 85% 25%, rgba(255,143,199,0.40), transparent 60%),
+        radial-gradient(900px 700px at 55% 90%, rgba(255,209,230,0.25), transparent 65%),
+        linear-gradient(160deg, #18001f, var(--bg));
     }
-    .card {
-      width: min(720px, 100%);
-      background: var(--card);
-      border: 1px solid #ffffff20;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 20px 60px #00000055;
-      backdrop-filter: blur(10px);
-      position: relative;
+
+    /* Floating sticker layer */
+    #stickers{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:0;
     }
-    .tag {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      padding: 8px 12px;
+
+    .sticker{
+      position:absolute;
+      left: 50%;
+      bottom:-120px;
+      width: var(--w);
+      height: auto;
+      opacity: 0.9;
+      filter: drop-shadow(0 12px 30px rgba(0,0,0,0.35));
+      transform: translateX(var(--x)) rotate(var(--rot));
+      animation: floatUp var(--dur) linear forwards;
+    }
+
+    @keyframes floatUp{
+      0%   { transform: translateX(var(--x)) translateY(0) rotate(var(--rot)); opacity:0; }
+      10%  { opacity: 0.95; }
+      100% { transform: translateX(calc(var(--x) + var(--drift))) translateY(-125vh) rotate(calc(var(--rot) + var(--spin))); opacity:0; }
+    }
+
+    /* Main card */
+    .card{
+      width:min(760px, 92vw);
+      padding: 28px 24px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.20), rgba(255,255,255,0.10));
+      border: 1px solid var(--cardBorder);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      z-index:2;
+      position:relative;
+    }
+
+    .badge{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding: 10px 14px;
       border-radius: 999px;
-      border: 1px solid #ffffff25;
-      background: #ffffff10;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: var(--muted);
       font-size: 14px;
-      opacity: .95;
-    } 
-    .center { 
-        justify-content: center; 
+      letter-spacing: 0.2px;
     }
-    h1 { margin: 14px 0 10px; font-size: clamp(28px, 4vw, 40px); line-height: 1.08; }
-    p { margin: 0 0 14px; font-size: 16px; opacity: .92; }
-    .screen { display: none; }
-    .screen.active { display: block; animation: fade .35s ease; }
-    @keyframes fade { from { opacity: 0; transform: translateY(6px);} to {opacity:1; transform:none;} }
-    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 18px; }
-    button {
-      border: 0;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      color: #0b0c16;
+
+    h1{
+      margin: 16px 0 10px;
+      font-size: clamp(30px, 4.4vw, 48px);
+      line-height:1.05;
+      letter-spacing: -0.6px;
+      text-shadow: 0 10px 35px rgba(0,0,0,0.35);
+    }
+
+    p{
+      margin: 0 0 18px;
+      font-size: 16px;
+      color: rgba(255,246,251,0.92);
+      line-height: 1.5;
+      max-width: 58ch;
+    }
+
+    .actions{
+      margin-top: 16px;
+      display:flex;
+      gap: 14px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      padding-top: 10px;
+    }
+
+    button{
+      border:0;
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-weight: 800;
+      cursor:pointer;
+      user-select:none;
       transition: transform .08s ease, filter .2s ease;
-      user-select: none;
+      min-width: 140px;
+      font-size: 16px;
     }
-    button:active { transform: translateY(1px) scale(.99); }
-    .btn-primary { background: linear-gradient(135deg, var(--accent), #ff8fb5); }
-    .btn-ghost { background: #ffffff15; color: var(--text); border: 1px solid #ffffff25; }
-    .btn-warn { background: linear-gradient(135deg, #ffd166, #ffb703); }
-    .moment {
-      border: 1px solid #ffffff20;
-      background: #ffffff10;
-      border-radius: 18px;
-      padding: 16px;
+
+    button:active{ transform: translateY(1px) scale(0.99); }
+
+    .yes{
+      background: linear-gradient(135deg, var(--pink1), var(--pink2));
+      color: #210014;
+      box-shadow: 0 14px 30px rgba(255,79,163,0.35);
+    }
+
+    .yes:hover{ filter: brightness(1.03); }
+
+    .noWrap{
+      position: relative;
+      display:inline-block;
+    }
+
+    .no{
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: var(--text);
+      backdrop-filter: blur(8px);
+    }
+
+    .hint{
       margin-top: 14px;
+      font-size: 13px;
+      color: rgba(255,227,242,0.88);
+      text-align:center;
     }
-    .moment h3 { margin: 0 0 8px; font-size: 18px; }
-    .progress { margin-top: 14px; font-size: 13px; opacity: .85; }
-    .valentine {
-      margin-top: 18px;
-      border-radius: 22px;
-      padding: 18px;
-      border: 1px solid #ffffff22;
-      background: linear-gradient(135deg, #ff4d8825, #ffd16615);
+
+    /* "Yes" overlay */
+    .overlay{
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      background: rgba(10,0,12,0.55);
+      backdrop-filter: blur(8px);
+      z-index:5;
+      padding: 22px;
     }
-    .btns-val { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
-    .no-wrap { position: relative; }
-    .tiny { font-size: 13px; opacity: .8; margin-top: 10px; }
-    canvas { position: fixed; inset: 0; pointer-events: none; }
+    .overlay.active{ display:grid; }
+
+    .modal{
+      width:min(720px, 92vw);
+      border-radius: 26px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.12));
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: var(--shadow);
+      padding: 26px 22px;
+      text-align:center;
+    }
+    .modal h2{
+      margin: 6px 0 10px;
+      font-size: clamp(26px, 3.5vw, 40px);
+    }
+    .modal p{
+      margin: 0 auto 18px;
+    }
+    .smallActions{
+      display:flex;
+      justify-content:center;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+    .ghost{
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: var(--text);
+    }
+
+    /* Confetti canvas on top */
+    canvas{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:6;
+    }
   </style>
 </head>
+
 <body>
+  <div id="stickers" aria-hidden="true"></div>
   <canvas id="confetti"></canvas>
 
   <main class="card" role="main">
-    <div class="screen active" id="s0">
-        <span class="tag">💌 ’n Klein website, vir my natvis 🐟</span>
-        <h1>Hii my lief :) </h1>
-        <p>
-            Ek het hierdie vir jou gebou… net iets klein om vir jou te wys hoe baie jy vir my beteken.
-        </p>
+    <span class="badge">💗 Vir Mary-Lize</span>
 
-        <div class="row center">
-            <button class="btn-primary" id="start">Begin ✨</button>
-            <!-- <button class="btn-ghost" id="peek">Net gou kyk 👀</button> -->
-        </div>
+    <h1>Mary-Lize… wil jy my Valentyn wees? 💌</h1>
 
-        <!-- <p class="tiny">Maak hom oop wanneer jy ’n rustige oomblik het.</p> -->
+    <p>
+      Ek wou dit net op ’n bietjie ’n ander manier vra —
+      iets cute, iets lig, iets wat wys ek meen dit.
+    </p>
+
+    <div class="actions">
+      <button class="yes" id="yesBtn">Ja 💖</button>
+
+      <span class="noWrap" id="noWrap">
+        <button class="no" id="noBtn">Nee 🙃</button>
+      </span>
     </div>
 
-    <div class="screen" id="s1">
-      <span class="tag">🌙 Little moments</span>
-      <h1 id="hi"></h1>
-      <p>Before I ask you something… I just want you to know a few things.</p>
-
-      <div class="moment">
-        <h3 id="mTitle"></h3>
-        <p id="mBody"></p>
-      </div>
-
-      <div class="progress" id="prog"></div>
-
-      <div class="row">
-        <button class="btn-ghost" id="back">← Back</button>
-        <button class="btn-primary" id="next">Next →</button>
-      </div>
-    </div>
-
-    <div class="screen" id="s2">
-      <span class="tag">💘 The question</span>
-      <h1 id="finalTitle">So…</h1>
-      <p class="valentine" id="finalText"></p>
-
-      <div class="btns-val">
-        <button class="btn-primary" id="yes">Yes 💖</button>
-        <span class="no-wrap">
-          <button class="btn-warn" id="no">No 🙃</button>
-        </span>
-      </div>
-
-      <p class="tiny">The “No” button is a little shy 😅</p>
-    </div>
-
-    <div class="screen" id="s3">
-      <span class="tag">🎉 Yay!</span>
-      <h1>It’s a date 💘</h1>
-      <p id="yayText"></p>
-      <div class="row">
-        <button class="btn-primary" id="copy">Copy a cute message to send me</button>
-        <button class="btn-ghost" id="restart">Replay</button>
-      </div>
-      <p class="tiny">Screenshot this moment. It’s official now 😄</p>
-    </div>
+    <div class="hint">PS: “Nee” is bietjie skaam 😌</div>
   </main>
 
+  <!-- YES modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <h2>Yaaaay 😭💘</h2>
+      <p>
+        Okay… nou is dit amptelik 😌<br/>
+        Stuur vir my: <b>“Ja — ek is jou Valentyn 💖”</b>
+      </p>
+      <div class="smallActions">
+        <button class="yes" id="copyBtn">Copy boodskap</button>
+        <button class="ghost" id="closeBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // --- Personalize these ---
-    const moments = [
-      { title: "I love how you make things feel lighter", body: "Even on hectic days, you somehow bring calm and warmth." },
-      { title: "You’re genuinely special to me", body: "Not just in big moments… in the small ones too." },
-      { title: "I’m grateful for you", body: "For your presence, your heart, and the way you show up." },
-      { title: "So I wanted to do something different", body: "Something thoughtful. Something that feels like *us*." }
+    /***********************
+     * 1) FLOATING STICKERS
+     ***********************/
+    const stickersLayer = document.getElementById("stickers");
+
+    // OPTION A (default): emoji hearts (works immediately)
+    // OPTION B: Replace these with your own GIF/MP4/WebM sticker paths
+    // Example paths you can use once you add files:
+    //   "stickers/sticker1.gif"
+    //   "stickers/sticker2.webm"
+    //   "stickers/sticker3.mp4"
+    const STICKERS = [
+      "💗","💖","💕","💘","💞","❤️",
+      "Media/WhatsApp Video 2026-02-07 at 21.20.51.mp4"
+      // "stickers/whatsapp2.webm",
     ];
 
-    // Change this line to match your vibe:
-    const valentineQuestion = () =>
-    `Mary-Lize… wil jy my Valentyn wees? 💌\n\n(En ja — ek beplan iets cute. Jy gaan nie ontsnap nie 😌)`;
-
-    const yayMessage = () =>
-    `Okay Mary-Lize… nou is dit amptelik 😌💘\n\nStuur vir my: “Ja — ek is jou Valentyn. Nou sê vir my wat is die plan 😏”`;
-
-
-    // --- Screen logic ---
-    const screens = ["s0","s1","s2","s3"].map(id => document.getElementById(id));
-    const show = (i) => screens.forEach((s, idx) => s.classList.toggle("active", idx===i));
-
-    // const nameEl = document.getElementById("name"); 
-    const hi = document.getElementById("hi");
-    const mTitle = document.getElementById("mTitle");
-    const mBody = document.getElementById("mBody");
-    const prog = document.getElementById("prog");
-    const finalText = document.getElementById("finalText");
-    const yayText = document.getElementById("yayText");
-
-    let idx = 0;
-
-    function renderMoment() {
-      const m = moments[idx];
-      mTitle.textContent = m.title;
-      mBody.textContent = m.body;
-      prog.textContent = `Moment ${idx+1} of ${moments.length}`;
-      document.getElementById("back").style.opacity = idx === 0 ? 0.4 : 1;
-      document.getElementById("back").style.pointerEvents = idx === 0 ? "none" : "auto";
-      document.getElementById("next").textContent = idx === moments.length - 1 ? "To the question →" : "Next →";
+    function isMediaPath(x){
+      return typeof x === "string" && (x.endsWith(".gif") || x.endsWith(".webm") || x.endsWith(".mp4"));
     }
 
-    document.getElementById("start").onclick = () => {
-        hi.textContent = `Hey Mary-Lize ✨`;
-        idx = 0;
-        renderMoment();
-        show(1);
-        };
-
-
-    document.getElementById("back").onclick = () => { if (idx > 0) { idx--; renderMoment(); } };
-    document.getElementById("next").onclick = () => {
-      if (idx < moments.length - 1) { idx++; renderMoment(); }
-      else {
-        finalText.textContent = valentineQuestion();
-        show(2);
+    function createStickerElement(src){
+      if(isMediaPath(src)){
+        // GIF -> img, MP4/WebM -> video
+        if(src.endsWith(".gif")){
+          const img = document.createElement("img");
+          img.src = src;
+          img.alt = "";
+          return img;
+        } else {
+          const vid = document.createElement("video");
+          vid.src = src;
+          vid.autoplay = true;
+          vid.loop = true;
+          vid.muted = true;
+          vid.playsInline = true;
+          vid.setAttribute("playsinline", "");
+          // Some browsers need a nudge:
+          vid.addEventListener("canplay", () => vid.play().catch(()=>{}), { once:true });
+          return vid;
+        }
+      } else {
+        const span = document.createElement("span");
+        span.textContent = src;
+        return span;
       }
-    };
+    }
 
-    // --- Shy No button ---
-    const noBtn = document.getElementById("no");
-    const noWrap = document.querySelector(".no-wrap");
-    function dodge() {
-      const maxX = 160, maxY = 70;
+    function spawnSticker(){
+      const src = STICKERS[Math.floor(Math.random() * STICKERS.length)];
+      const el = createStickerElement(src);
+
+      el.classList.add("sticker");
+
+      const x = (Math.random() * 120 - 60) + "vw";   // spread across screen
+      const drift = (Math.random() * 260 - 130) + "px";
+      const rot = (Math.random() * 18 - 9) + "deg";
+      const spin = (Math.random() * 30 - 15) + "deg";
+      const dur = (7 + Math.random() * 8).toFixed(2) + "s";
+      const w = (28 + Math.random() * 48).toFixed(0) + "px";
+
+      el.style.setProperty("--x", x);
+      el.style.setProperty("--drift", drift);
+      el.style.setProperty("--rot", rot);
+      el.style.setProperty("--spin", spin);
+      el.style.setProperty("--dur", dur);
+      el.style.setProperty("--w", w);
+
+      // Position is controlled by transform variables; keep "left" stable
+      el.style.left = (Math.random() * 100) + "vw";
+
+      stickersLayer.appendChild(el);
+      setTimeout(() => el.remove(), parseFloat(dur) * 1000 + 200);
+    }
+
+    // Spawn loop
+    setInterval(() => {
+      spawnSticker();
+      if(Math.random() > 0.55) spawnSticker();
+    }, 650);
+
+    /***********************
+     * 2) NO BUTTON DODGE
+     ***********************/
+    const noWrap = document.getElementById("noWrap");
+    const noBtn = document.getElementById("noBtn");
+
+    function dodge(){
+      // Keep movement within a reasonable area around its original spot
+      const maxX = 240;
+      const maxY = 120;
+
       const x = (Math.random() * 2 - 1) * maxX;
       const y = (Math.random() * 2 - 1) * maxY;
+
       noWrap.style.transform = `translate(${x}px, ${y}px)`;
     }
+
+    // More “near cursor” feel:
     noBtn.addEventListener("mouseenter", dodge);
+    noBtn.addEventListener("mousemove", (e) => {
+      // If cursor is near the center, dodge quicker
+      const rect = noBtn.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if(dist < 60) dodge();
+    });
     noBtn.addEventListener("click", dodge);
 
-    // --- Yes flow + confetti ---
-    document.getElementById("yes").onclick = () => {
-      yayText.textContent = yayMessage();
-      show(3);
+    /***********************
+     * 3) YES MODAL + CONFETTI
+     ***********************/
+    const overlay = document.getElementById("overlay");
+    const yesBtn = document.getElementById("yesBtn");
+    const closeBtn = document.getElementById("closeBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    yesBtn.addEventListener("click", () => {
+      overlay.classList.add("active");
       popConfetti();
-    };
+    });
 
-    document.getElementById("copy").onclick = async () => {
-      const msg = `Yes — I’m your Valentine. Now tell me the plan 😏💘`;
-      try {
+    closeBtn.addEventListener("click", () => {
+      overlay.classList.remove("active");
+    });
+
+    copyBtn.addEventListener("click", async () => {
+      const msg = "Ja — ek is jou Valentyn 💖";
+      try{
         await navigator.clipboard.writeText(msg);
-        alert("Copied 😄");
+        copyBtn.textContent = "Gekopieer ✅";
+        setTimeout(() => copyBtn.textContent = "Copy boodskap", 1200);
       } catch {
-        prompt("Copy this:", msg);
+        prompt("Copy hierdie:", msg);
       }
-    };
+    });
 
-    document.getElementById("restart").onclick = () => {
-      noWrap.style.transform = "translate(0,0)";
-      show(0);
-    };
-
-    // --- Simple confetti (tiny canvas) ---
+    // Confetti (simple dots)
     const canvas = document.getElementById("confetti");
     const ctx = canvas.getContext("2d");
     const DPR = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    function resize() {
+
+    function resize(){
       canvas.width = Math.floor(innerWidth * DPR);
       canvas.height = Math.floor(innerHeight * DPR);
       canvas.style.width = innerWidth + "px";
@@ -260,20 +405,22 @@
     resize();
 
     let confetti = [];
-    function popConfetti() {
-      const count = 160;
+
+    function popConfetti(){
+      const count = 190;
       confetti = Array.from({length: count}, () => ({
-        x: innerWidth/2 + (Math.random()*200-100),
-        y: innerHeight/3 + (Math.random()*40-20),
-        vx: (Math.random()*2-1)*6,
-        vy: (Math.random()*-1)*10 - 2,
-        g: 0.25 + Math.random()*0.15,
-        r: 2 + Math.random()*4,
+        x: innerWidth/2 + (Math.random()*240-120),
+        y: innerHeight/3 + (Math.random()*60-30),
+        vx: (Math.random()*2-1)*7,
+        vy: (Math.random()*-1)*12 - 2,
+        g: 0.24 + Math.random()*0.18,
+        r: 2 + Math.random()*4.5,
         a: 1
       }));
       requestAnimationFrame(tick);
     }
-    function tick() {
+
+    function tick(){
       ctx.clearRect(0,0,innerWidth,innerHeight);
       confetti.forEach(p => {
         p.vy += p.g;
@@ -286,8 +433,8 @@
         ctx.fill();
       });
       ctx.globalAlpha = 1;
-      confetti = confetti.filter(p => p.a > 0.05 && p.y < innerHeight + 50);
-      if (confetti.length) requestAnimationFrame(tick);
+      confetti = confetti.filter(p => p.a > 0.05 && p.y < innerHeight + 60);
+      if(confetti.length) requestAnimationFrame(tick);
     }
   </script>
 </body>
